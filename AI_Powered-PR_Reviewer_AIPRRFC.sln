@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI_Powered-PR_Reviewer_Copilot", "AI_Powered-PR_Reviewer_Copilot\AI_Powered-PR_Reviewer_Copilot.csproj", "{8AE66497-328C-DAE6-F6E7-A731A4FEDD1D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8AE66497-328C-DAE6-F6E7-A731A4FEDD1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AE66497-328C-DAE6-F6E7-A731A4FEDD1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AE66497-328C-DAE6-F6E7-A731A4FEDD1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AE66497-328C-DAE6-F6E7-A731A4FEDD1D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3A360D30-5E2A-4573-998F-AAA5D2B2D234}
+	EndGlobalSection
+EndGlobal
