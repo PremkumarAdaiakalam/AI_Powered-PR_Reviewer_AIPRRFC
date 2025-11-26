@@ -94,4 +94,4 @@ jobs:
           gh pr merge ${{ github.event.pull_request.number }} --squash --auto
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-#echo "// change to trigger PR" >> Controllers/UserController.cs
+#echo "// change to trigger PR" >> Controllers/UserController.cs 
