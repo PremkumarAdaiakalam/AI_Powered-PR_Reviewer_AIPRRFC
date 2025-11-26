@@ -166,7 +166,9 @@ jobs:
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $OPENAI_API_KEY" \
             -d @request.json)
-
+            echo "========= FULL RAW RESPONSE ========="
+            cat full_response.json
+            echo "====================================="
           echo "$response" > full_response.json
 
           review=$(echo "$response" | jq -r '.choices[0].message.content')
