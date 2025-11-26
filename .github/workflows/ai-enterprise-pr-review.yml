@@ -96,7 +96,6 @@
 #           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 # #echo "// change to trigger PR" >> Controllers/UserController.cs 
 
-
 name: AI PR Review
 
 on:
@@ -115,7 +114,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Get PR diff
@@ -128,41 +127,42 @@ jobs:
               repo: context.repo.repo,
               pull_number: context.payload.pull_request.number
             });
+
             const diffUrl = pr.data.diff_url;
             const response = await fetch(diffUrl);
             const text = await response.text();
+
             core.setOutput("diff", text);
 
-      - name: Build JSON request
+      - name: Build JSON request for OpenAI
         id: build_json
         env:
           DIFF: ${{ steps.diff.outputs.diff }}
           MODEL: ${{ env.MODEL_OPENAI }}
         run: |
-            # Encode diff to safe base64
-            echo "$DIFF" | base64 -w 0 > diff.b64
+          # Base64 encode diff safely
+          echo "$DIFF" | base64 -w 0 > diff.b64
+          DIFF_B64=$(cat diff.b64)
 
-            DIFF_B64=$(cat diff.b64)
+          cat <<EOF > request.json
+          {
+            "model": "${MODEL}",
+            "max_tokens": 1500,
+            "temperature": 0.2,
+            "messages": [
+              {
+                "role": "system",
+                "content": "You are a senior .NET reviewer. First decode the diff (base64), then review the code. Respond in bullet points with Severity: High, Medium, Low. Highlight blockers."
+              },
+              {
+                "role": "user",
+                "content": "Base64 diff: ${DIFF_B64}"
+              }
+            ]
+          }
+          EOF
 
-            cat <<EOF > request.json
-            {
-              "model": "$MODEL",
-              "max_tokens": 1500,
-              "temperature": 0.2,
-              "messages": [
-                            {
-                              "role": "system",
-                              "content": "You are a senior .NET reviewer. Decode the diff (base64) first, then review. Answer in bullet points with severity levels."
-                          },
-                        {
-                         "role": "user",
-                        "content": "Here is the diff (base64 encoded): \"$DIFF_B64\""
-            }
-            ] }
-             EOF
-
-
-      - name: Run OpenAI Review
+      - name: Call OpenAI API
         id: ai
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -171,16 +171,14 @@ jobs:
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $OPENAI_API_KEY" \
             -d @request.json)
-            
+
           echo "$response" > full_response.json
-          
+
           echo "========= FULL RAW RESPONSE ========="
           cat full_response.json
           echo "====================================="
 
           review=$(echo "$response" | jq -r '.choices[0].message.content')
-
-          echo "$review"
 
           {
             echo "review_output<<EOF"
@@ -188,7 +186,7 @@ jobs:
             echo "EOF"
           } >> $GITHUB_OUTPUT
 
-      - name: Post sticky comment
+      - name: Post sticky PR comment
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           recreate: true
@@ -196,13 +194,13 @@ jobs:
             ## 🤖 AI Code Review
             ${{ steps.ai.outputs.review_output }}
 
-      - name: Fail PR on High severity
+      - name: Fail build on High severity
         if: contains(steps.ai.outputs.review_output, 'High')
         run: |
-          echo "High severity issues found — blocking merge."
+          echo "High severity issues detected — PR blocked."
           exit 1
 
-      - name: Auto-merge (if allowed)
+      - name: Auto-merge (optional)
         if: >
           github.event.pull_request.mergeable == true &&
           !contains(steps.ai.outputs.review_output, 'High')
