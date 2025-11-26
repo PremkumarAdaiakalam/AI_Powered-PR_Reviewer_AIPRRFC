@@ -1,0 +1,6 @@
+@AI_Powered_PR_Reviewer_Copilot_HostAddress = http://localhost:5185
+
+GET {{AI_Powered_PR_Reviewer_Copilot_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
