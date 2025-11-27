@@ -162,7 +162,7 @@ jobs:
           }
           EOF
 
-      - name: Call OpenAI API
+      - name: PR Review Comment via Co-pilot
         id: ai
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
