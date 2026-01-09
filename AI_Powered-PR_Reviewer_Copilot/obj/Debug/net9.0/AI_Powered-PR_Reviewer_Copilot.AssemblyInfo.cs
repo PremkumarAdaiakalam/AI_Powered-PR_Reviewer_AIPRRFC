@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AI_Powered-PR_Reviewer_Copilot")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c37583ab7508b3bfdbd768242b446393ffa5af1e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+067d444c9cebdd187b3fa0b7bf42aaf068b74437")]
 [assembly: System.Reflection.AssemblyProductAttribute("AI_Powered-PR_Reviewer_Copilot")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AI_Powered-PR_Reviewer_Copilot")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
