@@ -1,0 +1,27 @@
+team: backend-platform
+
+architecture:
+  controllers:
+    allowBusinessLogic: false
+    message: "Move business logic to Service layer"
+
+async_rules:
+  forbid:
+    - ".Result"
+    - ".Wait()"
+    - "Task.Run"
+  message: "Async-only I/O policy violation"
+
+security:
+  sql:
+    allowRawSqlOnlyIn:
+      - "/Infrastructure/Data/Sql/"
+    message: "Raw SQL not allowed outside approved folders"
+
+performance:
+  linq:
+    forbidInLoops: true
+    hotPaths:
+      - "/Services/"
+      - "/Handlers/"
+    message: "LINQ inside hot path may cause allocations"
